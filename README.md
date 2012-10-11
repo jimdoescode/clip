@@ -51,3 +51,10 @@ You can see what commands are available by typing:
 To see help text for a command you would type:
 
     $ clip help <command-name>
+
+
+## Installation
+
+Copy the files where ever you need them. All files are important to make sure you have them all.
+
+Also make sure the clip command files has execute permissions.
