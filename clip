@@ -6,4 +6,4 @@
 \Clip\Main::load($argv[0]);
 
 $offset = 2; //Accounts for script name and command name to determine parameters
-$argc < $offset ? \Clip\Main::help() : \Clip\Main::command($argv[$offset-1], array_slice($argv, $offset));
+return $argc < $offset ? \Clip\Main::help() : \Clip\Main::command($argv[$offset-1], array_slice($argv, $offset));

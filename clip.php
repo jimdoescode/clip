@@ -41,6 +41,8 @@ class Main
         foreach(self::$commands as $key => $ignored)
             echo " - $key\r\n";
         echo PHP_EOL;
+
+        return 0;
     }
 
     /**
@@ -65,11 +67,13 @@ class Main
         //If the command exists or is a help command run
         //it otherwise display the general help text
         if(array_key_exists($name, self::$commands))
-            self::$commands[$name]->run($converted);
+            return self::$commands[$name]->run($converted);
         elseif($name === 'help' && array_key_exists($params[0], self::$commands))
             self::$commands[$params[0]]->help();
         else
             self::help();
+
+        return 0;
     }
 }
 
@@ -92,8 +96,24 @@ class Config
     }
 }
 
+/**
+ * Implement this interface for any command you want recognized by clip
+ */
 interface Command
 {
+    /**
+     * This method should echo out any helpful
+     * information relating to the command.
+     */
     public function help();
+
+    /**
+     * This method will be executed when the
+     * command is called. Passing any additional
+     * parameters to the command.
+     *
+     * @param array $params additional parameters passed to the command.
+     * @return int 0 on success or an error code
+     */
     public function run(array $params);
 }
