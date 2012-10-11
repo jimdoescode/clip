@@ -9,7 +9,7 @@ You can run a command by typing the following:
 Output from the command will be displayed in the console.
 
 
-## Commands
+## New Commands
 
 Make a new command by adding a file to the 'commands' directory. The file name should exactly match the class name.
 CLIP provides an interface that must be implemented for any command.
