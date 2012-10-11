@@ -68,3 +68,8 @@ To see help text for a command you would type:
 Copy the files where ever you need them. All the files with the exception of commands/Test.php are required so make sure you have them all.
 
 Also make sure the clip command files has execute permissions.
+
+
+## License
+
+Clip is MIT licensed

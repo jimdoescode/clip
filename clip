@@ -53,7 +53,7 @@ class Main
      * @param string $name
      * @param array $params
      */
-    public static function command($name, array $params)
+    public static function fire($name, array $params)
     {
         $converted = array();
         foreach($params as $key => $param)
@@ -125,4 +125,4 @@ interface Command
 Main::load();
 
 $offset = 2; //Accounts for script name and command name to determine parameters
-return $argc < $offset ? Main::help() : Main::command($argv[$offset-1], array_slice($argv, $offset));
+return $argc < $offset ? Main::help() : Main::fire($argv[$offset-1], array_slice($argv, $offset));
