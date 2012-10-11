@@ -14,7 +14,7 @@ Output from the command will be displayed in the console.
 Make a new command by adding a file to the 'commands' directory. The file name should exactly match the class name.
 CLIP provides an interface that must be implemented for any command.
 ```php
-class NewCommand implemented \Clip\Command
+class NewCommand implements \Clip\Command
 ```
 This Command interface has two methods that must be implemented:
 
