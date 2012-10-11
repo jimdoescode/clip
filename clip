@@ -1,7 +1,29 @@
 #!/usr/bin/env php
 <?php namespace Clip;
 
-class Main
+/**
+ * Copyright (c) 2012 Jim Saunders <jim@jimsaunders.net>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+class Clip
 {
     /**
      * @var array All loaded commands
@@ -26,7 +48,7 @@ class Main
                 {
                     $obj = new $command;
                     if($obj instanceof Command)
-                        Main::$commands[$command] = $obj;
+                        Clip::$commands[$command] = $obj;
                 }
             }
 
@@ -122,7 +144,7 @@ interface Command
 }
 
 //Load all the commands into Clip
-Main::load();
+Clip::load();
 
 $offset = 2; //Accounts for script name and command name to determine parameters
-return $argc < $offset ? Main::help() : Main::fire($argv[$offset-1], array_slice($argv, $offset));
+return $argc < $offset ? Clip::help() : Clip::fire($argv[$offset-1], array_slice($argv, $offset));
