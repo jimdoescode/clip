@@ -20,7 +20,7 @@ This Command interface has two methods that must be implemented:
 
 The 'run' method which actually executes the command:
 ```php
-public function run(array params)
+public function run(array $params)
 ```
 The 'help' method which outlines what this command actually does:
 ```php
