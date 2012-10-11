@@ -1,6 +1,6 @@
 ## Overview
 
-CLIP is a simple framework for making CLI (console) commands in PHP.
+Clip is a simple framework for making CLI (console) commands in PHP.
 
 You can run a command by typing the following:
 
@@ -12,7 +12,7 @@ Output from the command will be displayed in the console.
 ## New Commands
 
 Make a new command by adding a file to the 'commands' directory. The file name should exactly match the class name.
-CLIP provides an interface that must be implemented for any command.
+Clip provides an interface that must be implemented for any command.
 ```php
 class NewCommand implements \Clip\Command
 ```
@@ -29,7 +29,7 @@ public function help()
 
 ## Configuration
 
-CLIP provides a very simple way to create and access config files. Add a new file to the 'config' directory.
+Clip provides a very simple way to create and access config files. Add a new file to the 'config' directory.
 In that file you will return an associative array of configuration parameters.
 ```php
     return array(

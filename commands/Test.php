@@ -12,6 +12,8 @@ class Test implements \Clip\Command
         echo "\r\nThis is the directory we look in for commands:\r\n";
         echo \Clip\Config::main('directory');
         echo PHP_EOL;
+
+        return 0;
     }
 
     public function help()
