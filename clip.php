@@ -82,18 +82,19 @@ class Config
     static $files = array();
     public static function __callStatic($name, $params)
     {
-        $key = "clip_config_{$name}";
-        if(!array_key_exists($key, self::$files))
-            self::$files[$key] = require_once("config/{$name}.php");
+        if(!array_key_exists($name, self::$files))
+            self::$files[$name] = require_once("config/{$name}.php");
 
-        if(is_array($params))
+        if(!empty($params))
         {
-            $value = self::$files[$key];
+            $values = self::$files[$name];
+            $result = array();
             foreach($params as $param)
-                $value = $value[$param];
-            return $value;
+                $result[] = $values[$param];
+
+            return count($result) > 1 ? $result : $result[0];
         }
-        return self::$files[$key];
+        return self::$files[$name];
     }
 }
 

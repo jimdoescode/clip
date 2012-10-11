@@ -42,6 +42,16 @@ To access these parameters you would use the following command:
     \Clip\Config::<config-filename>('foo');
 ```
 
+You can specify additional configuration keys as parameters to the call to get an array back for each key specified.
+```php
+    \Clip\Config::<config-filename>('foo', 'test');
+```
+
+You can also not specify any parameters to get the entire configuration array back.
+```php
+    \Clip\Config::<config-filename>();
+```
+
 ## Help
 
 You can see what commands are available by typing:
