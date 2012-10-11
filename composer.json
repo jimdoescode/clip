@@ -1,5 +1,5 @@
 {
-	"name": "Clip/Clip",
+	"name": "clip/clip",
 	"description": "A simple framework for making and running CLI (console) commands",
 	"keywords": ["microframework","cli","console"],
 	"homepage": "https://github.com/jimdoescode/clip",
