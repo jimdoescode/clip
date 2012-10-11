@@ -79,20 +79,21 @@ class Main
 
 class Config
 {
+    static $files = array();
     public static function __callStatic($name, $params)
     {
         $key = "clip_config_{$name}";
-        if(!array_key_exists($key, $GLOBALS))
-            $GLOBALS[$key] = require_once("config/{$name}.php");
+        if(!array_key_exists($key, self::$files))
+            self::$files[$key] = require_once("config/{$name}.php");
 
         if(is_array($params))
         {
-            $value = $GLOBALS[$key];
+            $value = self::$files[$key];
             foreach($params as $param)
                 $value = $value[$param];
             return $value;
         }
-        return $GLOBALS[$key];
+        return self::$files[$key];
     }
 }
 
