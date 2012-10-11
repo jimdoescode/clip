@@ -11,17 +11,16 @@ class Main
     /**
      * Loads the commands into an array.
      */
-    public static function load($exec)
+    public static function load()
     {
         //Move to the directory where the command resides
-        //TODO: This isn't good enough when the command exists in the PATH
-        chdir(substr($exec, 0, strrpos($exec, '/')));
+        $dir = __DIR__.'/'.Config::main('directory');
 
-        array_map(function($command)
+        array_map(function($command) use($dir)
         {
             if($command !== '.' && $command !== '..')
             {
-                include(Config::main('directory')."/{$command}");
+                include("{$dir}/{$command}");
                 $command = substr($command, 0, -4);
                 if(class_exists($command, false))
                 {
@@ -31,7 +30,7 @@ class Main
                 }
             }
 
-        }, scandir(Config::main('directory')));
+        }, scandir($dir));
     }
 
     /**
@@ -85,7 +84,7 @@ class Config
     public static function __callStatic($name, $params)
     {
         if(!array_key_exists($name, self::$files))
-            self::$files[$name] = require_once("config/{$name}.php");
+            self::$files[$name] = require_once(__DIR__."/config/{$name}.php");
 
         if(!empty($params))
         {
@@ -123,7 +122,7 @@ interface Command
 }
 
 //Load all the commands into Clip
-Main::load($argv[0]);
+Main::load();
 
 $offset = 2; //Accounts for script name and command name to determine parameters
 return $argc < $offset ? Main::help() : Main::command($argv[$offset-1], array_slice($argv, $offset));
