@@ -143,10 +143,15 @@ interface Command
     public function run(array $params);
 }
 
+/**
+ * A special function to output colored text to the console.
+ *
+ * @param $text
+ */
 function render($text)
 {
-    $colors = Config::colors();
-    $names = strtoupper(implode('|',array_keys($colors)));
+    $styles = Config::styles();
+    $names = strtoupper(implode('|',array_keys($styles)));
     preg_match_all("#(\[({$names})\]).*?(\[\/({$names})\])#", $text, $matches);
 
     $replacements = $matches[1];
@@ -161,10 +166,10 @@ function render($text)
         foreach($replacements as $index => $replacement)
         {
             $color = strtolower($selections[$index]);
-            if(array_key_exists($color, $colors))
-                $text = str_ireplace($replacement, $colors[$color], $text);
+            if(array_key_exists($color, $styles))
+                $text = str_ireplace($replacement, $styles[$color], $text);
         }
-        $text = str_ireplace($resets, $colors['reset'], $text);
+        $text = str_ireplace($resets, $styles['reset'], $text);
     }
     echo $text;
 }
