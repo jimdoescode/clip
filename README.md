@@ -32,31 +32,31 @@ public function help()
 Clip provides a very simple way to create and access config files. Add a new file to the 'config' directory.
 In that file you will return an associative array of configuration parameters.
 ```php
-    return array(
-        'foo' => 'bar',
-        'test' => 'baz'
-    );
+return array(
+    'foo' => 'bar',
+    'test' => 'baz'
+);
 ```
 To access these parameters you would use the following command:
 ```php
-    \Clip\Config::<config-filename>('foo');
+\Clip\Config::<config-filename>('foo');
 ```
 
 You can specify additional configuration keys as parameters to the call to get an array back for each key specified.
 ```php
-    \Clip\Config::<config-filename>('foo', 'test');
+\Clip\Config::<config-filename>('foo', 'test');
 ```
 
 You can also not specify any parameters to get the entire configuration array back.
 ```php
-    \Clip\Config::<config-filename>();
+\Clip\Config::<config-filename>();
 ```
 
 ## Coloring
 
 Clip lets you color your output if you so choose. To do so you will need to use the render function under the clip namespace.
 ```php
-    \Clip\render('Some colorful test [red]output[/red]. Neato!');
+\Clip\render('Some colorful test [red]output[/red]. Neato!');
 ```
 
 Check out the colors.php config file for all of the different color options. Use the square bracket syntax with the key of the color in it. Note that nesting does not work the way it would in HTML.
