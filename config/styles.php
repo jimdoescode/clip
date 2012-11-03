@@ -30,7 +30,7 @@ return array(
     'cyan_bg'       => "\033[46m",
     'light_gray_bg' => "\033[47m",
 
-    //Color reset
+    //Text reset
     'reset' => "\033[0m",
 
 );

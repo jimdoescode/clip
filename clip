@@ -144,7 +144,7 @@ interface Command
 }
 
 /**
- * A special function to output colored text to the console.
+ * A special function to output styled text to the console.
  *
  * @param $text
  */
