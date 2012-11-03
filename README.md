@@ -61,6 +61,13 @@ Clip lets you style your output if you so choose. To do so you will need to use 
 
 Check out the styles.php config file for the different options. Use the square bracket syntax with the key of the style in it. Feel free to add any additional styles that are not currently set in the config file. Note that nesting does not work the way it would in HTML.
 
+## Command nesting
+
+If you would like to call another Command inside of a Command you can do that with Clip. Access the current Clip instance using the 'instance' method. Then call the 'fire' method on the Clip instance specifying what the other Command is and what parameters to use.
+ ```php
+ \Clip\instance()->fire('OtherCommand', $params);
+ ```
+This is useful if you have a separate Command that needs to be executed immediately after another Command finishes or if a Command relies on some parameters from another Command. I would advise that if you aren't careful this type of execution stack can get messy with too many Commands called consecutively.
 
 ## Help
 

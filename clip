@@ -25,20 +25,24 @@
 
 class Clip
 {
+    private static $instance;
+
     /**
      * @var array All loaded commands
      */
-    static $commands = array();
+    private $commands = array();
 
     /**
-     * Loads the commands into an array.
+     * Loads the commands into the commands array.
      */
-    public static function load()
+    public function __construct()
     {
+        self::$instance =& $this;
         //Move to the directory where the command resides
         $dir = __DIR__.'/'.Config::main('directory');
 
-        array_map(function($command) use($dir)
+        $cmdfiles = scandir($dir);
+        foreach($cmdfiles as $command)
         {
             if($command !== '.' && $command !== '..')
             {
@@ -48,20 +52,19 @@ class Clip
                 {
                     $obj = new $command;
                     if($obj instanceof Command)
-                        Clip::$commands[$command] = $obj;
+                        $this->commands[$command] = $obj;
                 }
             }
-
-        }, scandir($dir));
+        }
     }
 
     /**
      * Outputs the help text.
      */
-    public static function help()
+    public function help()
     {
         echo Config::main('help_text');
-        foreach(self::$commands as $key => $ignored)
+        foreach($this->commands as $key => $ignored)
             echo " - {$key}\r\n";
         echo PHP_EOL;
 
@@ -75,7 +78,7 @@ class Clip
      * @param string $name
      * @param array $params
      */
-    public static function fire($name, array $params)
+    public function fire($name, array $params)
     {
         $converted = array();
         foreach($params as $key => $param)
@@ -89,14 +92,24 @@ class Clip
         }
         //If the command exists or is a help command run
         //it otherwise display the general help text
-        if(array_key_exists($name, self::$commands))
-            return self::$commands[$name]->run($converted);
-        elseif($name === 'help' && array_key_exists($params[0], self::$commands))
-            self::$commands[$params[0]]->help();
+        if(array_key_exists($name, $this->commands))
+            return $this->commands[$name]->run($converted);
+        elseif($name === 'help' && array_key_exists($params[0], $this->commands))
+            $this->commands[$params[0]]->help();
         else
-            self::help();
+            $this->help();
 
         return 0;
+    }
+
+    /**
+     * To get an instance of the current running Clip.
+     *
+     * @return Clip instance
+     */
+    public static function &instance()
+    {
+        return self::$instance;
     }
 }
 
@@ -146,7 +159,7 @@ interface Command
 /**
  * A special function to output styled text to the console.
  *
- * @param $text
+ * @param string $text The text to render styled.
  */
 function render($text)
 {
@@ -174,8 +187,20 @@ function render($text)
     echo $text;
 }
 
-//Load all the commands into Clip
-Clip::load();
+/**
+ * A special function to gain access to the current running
+ * instance of clip.
+ *
+ * @return Clip
+ */
+function &instance()
+{
+    return Clip::instance();
+}
+
+//Create a new instance of clip.
+$instance = new Clip();
 
 $offset = 2; //Accounts for script name and command name to determine parameters
-return $argc < $offset ? Clip::help() : Clip::fire($argv[$offset-1], array_slice($argv, $offset));
+//Fire the command.
+return $argc < $offset ? $instance->help() : $instance->fire($argv[$offset-1], array_slice($argv, $offset));
