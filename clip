@@ -161,7 +161,8 @@ function render($text)
         foreach($replacements as $index => $replacement)
         {
             $color = strtolower($selections[$index]);
-            $text = str_ireplace($replacement, $colors[$color], $text);
+            if(array_key_exists($color, $colors))
+                $text = str_ireplace($replacement, $colors[$color], $text);
         }
         $text = str_ireplace($resets, $colors['reset'], $text);
     }
