@@ -8,8 +8,8 @@ class Test implements \Clip\Command
         echo "These are the params you passed:\r\n";
         print_r($params);
 
-        //Demonstrate what config access looks like.
-        echo "\r\nThis is the directory we look in for commands:\r\n";
+        //Demonstrate what coloring and config access looks like.
+        \Clip\render("\r\nThis is the [RED]directory[/RED] we look in for commands:\r\n");
         echo \Clip\Config::main('directory');
         echo PHP_EOL;
 

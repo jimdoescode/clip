@@ -52,6 +52,16 @@ You can also not specify any parameters to get the entire configuration array ba
     \Clip\Config::<config-filename>();
 ```
 
+## Coloring
+
+Clip lets you color your output if you so choose. To do so you will need to use the render function under the clip namespace.
+```php
+    \Clip\render('Some colorful test [red]output[/red]. Neato!');
+```
+
+Check out the colors.php config file for all of the different color options. Use the square bracket syntax with the key of the color in it. Note that nesting does not work the way it would in HTML.
+
+
 ## Help
 
 You can see what commands are available by typing:

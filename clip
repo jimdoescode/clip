@@ -143,6 +143,31 @@ interface Command
     public function run(array $params);
 }
 
+function render($text)
+{
+    $colors = Config::colors();
+    $names = strtoupper(implode('|',array_keys($colors)));
+    preg_match_all("#(\[({$names})\]).*?(\[\/({$names})\])#", $text, $matches);
+
+    $replacements = $matches[1];
+    $selections = $matches[2];
+    $resets = $matches[3];
+
+    if(!empty($replacements) && !empty($selections) && !empty($resets))
+    {
+        $replacements = array_unique($replacements);
+        $selections = array_unique($selections);
+
+        foreach($replacements as $index => $replacement)
+        {
+            $color = strtolower($selections[$index]);
+            $text = str_ireplace($replacement, $colors[$color], $text);
+        }
+        $text = str_ireplace($resets, $colors['reset'], $text);
+    }
+    echo $text;
+}
+
 //Load all the commands into Clip
 Clip::load();
 
