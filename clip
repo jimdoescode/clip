@@ -164,8 +164,8 @@ interface Command
 function render($text)
 {
     $styles = Config::styles();
-    $names = strtoupper(implode('|',array_keys($styles)));
-    preg_match_all("#(\[({$names})\]).*?(\[\/({$names})\])#", $text, $matches);
+    $names = implode('|',array_keys($styles));
+    preg_match_all("#(\[({$names})\]).*?(\[\/({$names})\])#i", $text, $matches);
 
     $replacements = $matches[1];
     $selections = $matches[2];

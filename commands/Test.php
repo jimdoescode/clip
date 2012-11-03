@@ -9,8 +9,8 @@ class Test implements \Clip\Command
         print_r($params);
 
         //Demonstrate what coloring and config access looks like.
-        \Clip\render("\r\nThis is the [RED]directory[/RED] we look in for commands:\r\n");
-        echo \Clip\Config::main('directory');
+        echo "\r\nThis is the directory we look in for commands:\r\n";
+        \Clip\render('[red]'.\Clip\Config::main('directory').'[/red]');
         echo PHP_EOL;
 
         return 0;
