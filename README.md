@@ -16,7 +16,7 @@ Clip provides an interface that must be implemented for any command.
 ```php
 class NewCommand implements \Clip\Command
 ```
-This Command interface has two methods that must be implemented:
+This Command interface has two methods that must be defined:
 
 The 'run' method which actually executes the command:
 ```php

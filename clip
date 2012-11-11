@@ -38,19 +38,27 @@ class Clip
     public function __construct()
     {
         self::$instance =& $this;
-        //Move to the directory where the command resides
-        $dir = __DIR__.'/'.Config::main('directory');
+
+        $commanddir = Config::main('directory');
+        if(is_null($commanddir))
+            die('Could not find commands directory. It should be specified in the main config.');
+
+        //The directory where commands reside should be relative
+        //to the directory with the clip executable.
+        $dir = realpath(__DIR__."/{$commanddir}");
 
         $cmdfiles = scandir($dir);
+        //Loop through each file in the commands directory
         foreach($cmdfiles as $command)
         {
-            if($command !== '.' && $command !== '..')
+            //Ignore the unnecessary directories as commands and include the valid ones
+            if($command !== '.' && $command !== '..' && include("{$dir}/{$command}"))
             {
-                include("{$dir}/{$command}");
                 $command = substr($command, 0, -4);
                 if(class_exists($command, false))
                 {
                     $obj = new $command;
+                    //Only load commands that use the clip command interface
                     if($obj instanceof Command)
                         $this->commands[$command] = $obj;
                 }
@@ -65,7 +73,7 @@ class Clip
     {
         echo Config::main('help_text');
         foreach($this->commands as $key => $ignored)
-            echo " - {$key}\r\n";
+            render("[blue] - {$key}[/blue]\r\n");
         echo PHP_EOL;
 
         return 0;
@@ -105,7 +113,7 @@ class Clip
     /**
      * To get an instance of the current running Clip.
      *
-     * @return Clip instance
+     * @return Clip This clip instance
      */
     public static function &instance()
     {
@@ -130,7 +138,7 @@ class Config
 
             return count($result) > 1 ? $result : $result[0];
         }
-        return self::$files[$name];
+        return array_key_exists($name, self::$files) ? self::$files[$name] : null;
     }
 }
 
@@ -164,7 +172,7 @@ interface Command
 function render($text)
 {
     $styles = Config::styles();
-    $names = implode('|',array_keys($styles));
+    $names = implode('|', array_keys($styles));
     preg_match_all("#(\[({$names})\]).*?(\[\/({$names})\])#i", $text, $matches);
 
     $replacements = $matches[1];
@@ -191,7 +199,7 @@ function render($text)
  * A special function to gain access to the current running
  * instance of clip.
  *
- * @return Clip
+ * @return Clip instance
  */
 function &instance()
 {
@@ -202,5 +210,8 @@ function &instance()
 $instance = new Clip();
 
 $offset = 2; //Accounts for script name and command name to determine parameters
-//Fire the command.
+
+if(!isset($argc) || !isset($argv))
+    die('Clip must be run from the command line.');
+
 return $argc < $offset ? $instance->help() : $instance->fire($argv[$offset-1], array_slice($argv, $offset));
