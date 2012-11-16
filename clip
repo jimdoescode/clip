@@ -216,6 +216,23 @@ function &instance()
     return Clip::instance();
 }
 
+//Setup an autoloader that will look in the commands directory
+//for classes to include that might not necessarily be commands
+//but are still used by commands.
+spl_autoload_register(function($class)
+{
+    $commanddir = Config::main('directory');
+
+    if(is_null($commanddir))
+        die('Could not find commands directory. It should be specified in the main config.');
+
+    //The directory where commands reside should be relative
+    //to the directory with the clip executable.
+    $dir = realpath(__DIR__."/{$commanddir}");
+
+    include("{$dir}/{$class}.php");
+});
+
 //Create a new instance of clip.
 $instance = new Clip();
 
