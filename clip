@@ -40,6 +40,8 @@ class Clip
         self::$instance =& $this;
 
         $commanddir = Config::main('directory');
+        $excludes = Config::main('exclude');
+
         if(is_null($commanddir))
             die('Could not find commands directory. It should be specified in the main config.');
 
@@ -51,8 +53,9 @@ class Clip
         //Loop through each file in the commands directory
         foreach($cmdfiles as $command)
         {
-            //Ignore the unnecessary directories as commands and include the valid ones
-            if($command !== '.' && $command !== '..' && include("{$dir}/{$command}"))
+            //Ignore the unnecessary directories as commands and anything that has been
+            //marked for exclusion then attempt to include the valid ones.
+            if($command !== '.' && $command !== '..' && array_search($command, $excludes) === false && include("{$dir}/{$command}"))
             {
                 $command = substr($command, 0, -4);
                 if(class_exists($command, false))
