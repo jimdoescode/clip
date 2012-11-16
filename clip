@@ -51,13 +51,15 @@ class Clip
 
         $cmdfiles = scandir($dir);
         //Loop through each file in the commands directory
-        foreach($cmdfiles as $command)
+        foreach($cmdfiles as $file)
         {
-            //Ignore the unnecessary directories as commands and anything that has been
-            //marked for exclusion then attempt to include the valid ones.
-            if($command !== '.' && $command !== '..' && array_search($command, $excludes) === false && include("{$dir}/{$command}"))
+            //Assume that each file uses the standard '.php' file extension.
+            $command = substr($file, 0, -4);
+
+            //Ignore the unnecessary directories as commands and anything that
+            //has been marked for exclusion then attempt to include the valid ones.
+            if($file !== '.' && $file !== '..' && array_search($command, $excludes) === false && include("{$dir}/{$file}"))
             {
-                $command = substr($command, 0, -4);
                 if(class_exists($command, false))
                 {
                     $obj = new $command;
@@ -75,8 +77,13 @@ class Clip
     public function help()
     {
         echo Config::main('help_text');
-        foreach($this->commands as $key => $ignored)
-            render("[blue] - {$key}[/blue]\r\n");
+        if(empty($this->commands))
+            render("[red] - NONE - [/red]\r\n");
+        else
+        {
+            foreach($this->commands as $key => $ignored)
+                render("[blue] - {$key}[/blue]\r\n");
+        }
         echo PHP_EOL;
 
         return 0;
