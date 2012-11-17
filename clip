@@ -133,7 +133,7 @@ class Clip
 
 class Config
 {
-    static $files = array();
+    private static $files = array();
     public static function __callStatic($name, $params)
     {
         if(!array_key_exists($name, self::$files))
