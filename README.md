@@ -56,10 +56,10 @@ You can also not specify any parameters to get the entire configuration array ba
 
 Clip lets you style your output if you so choose. To do so you will need to use the render function under the clip namespace.
 ```php
-\Clip\render('Some colorful test [red]output[/red]. Neato!');
+\Clip\render('Some colorful test [red]output[reset]. Neato!');
 ```
 
-Check out the styles.php config file for the different options. Use the square bracket syntax with the key of the style in it. Feel free to add any additional styles that are not currently set in the config file. Note that nesting does not work the way it would in HTML.
+Check out the styles.php config file for the different options. Use the square bracket syntax with the key of the style in it. Feel free to add any additional styles that are not currently set in the config file.
 
 ## Command nesting
 
