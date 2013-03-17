@@ -65,7 +65,7 @@ class Clip
                     $obj = new $command;
                     //Only load commands that use the clip command interface
                     if($obj instanceof Command)
-                        $this->commands[$command] = $obj;
+                        $this->commands[strtolower($command)] = $obj;
                 }
             }
         }
@@ -78,11 +78,11 @@ class Clip
     {
         echo Config::main('help_text');
         if(empty($this->commands))
-            render("[red] - NONE - [/red]\r\n");
+            render("[red] - NONE - [reset]\r\n");
         else
         {
             foreach($this->commands as $key => $ignored)
-                render("[blue] - {$key}[/blue]\r\n");
+                render("[blue] - {$key}[reset]\r\n");
         }
         echo PHP_EOL;
 
@@ -112,8 +112,8 @@ class Clip
         //it otherwise display the general help text
         if(array_key_exists($name, $this->commands))
             return $this->commands[$name]->run($converted);
-        elseif($name === 'help' && array_key_exists($params[0], $this->commands))
-            $this->commands[$params[0]]->help();
+        elseif($name === 'help' && array_key_exists(strtolower($params[0]), $this->commands))
+            $this->commands[strtolower($params[0])]->help();
         else
             $this->help();
 
@@ -183,13 +183,12 @@ function render($text)
 {
     $styles = Config::styles();
     $names = implode('|', array_keys($styles));
-    preg_match_all("#(\[({$names})\]).*?(\[\/({$names})\])#i", $text, $matches);
+    preg_match_all("#(\[({$names})\])#i", $text, $matches);
 
     $replacements = $matches[1];
     $selections = $matches[2];
-    $resets = $matches[3];
 
-    if(!empty($replacements) && !empty($selections) && !empty($resets))
+    if(!empty($replacements) && !empty($selections))
     {
         $replacements = array_unique($replacements);
         $selections = array_unique($selections);
@@ -200,7 +199,6 @@ function render($text)
             if(array_key_exists($color, $styles))
                 $text = str_ireplace($replacement, $styles[$color], $text);
         }
-        $text = str_ireplace($resets, $styles['reset'], $text);
     }
     echo $text;
 }
@@ -241,4 +239,4 @@ $offset = 2; //Accounts for script name and command name to determine parameters
 if(!isset($argc) || !isset($argv))
     die('Clip must be run from the command line.');
 
-return $argc < $offset ? $instance->help() : $instance->fire($argv[$offset-1], array_slice($argv, $offset));
+return $argc < $offset ? $instance->help() : $instance->fire(strtolower($argv[$offset-1]), array_slice($argv, $offset));

@@ -1,6 +1,6 @@
 <?php
 
-class Test implements \Clip\Command
+class Example implements \Clip\Command
 {
     public function run(array $params)
     {
@@ -10,7 +10,7 @@ class Test implements \Clip\Command
 
         //Demonstrate what coloring and config access looks like.
         echo "\r\nThis is the directory we look in for commands:\r\n";
-        \Clip\render('[red]'.\Clip\Config::main('directory').'[/red]');
+        \Clip\render('[red]'.\Clip\Config::main('directory').'[reset]');
         echo PHP_EOL;
 
         return 0;
