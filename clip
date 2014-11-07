@@ -112,7 +112,7 @@ class Clip
         //it otherwise display the general help text
         if(array_key_exists($name, $this->commands))
             return $this->commands[$name]->run($converted);
-        elseif($name === 'help' && array_key_exists(strtolower($params[0]), $this->commands))
+        elseif($name === 'help' && !empty($params) && array_key_exists(strtolower($params[0]), $this->commands))
             $this->commands[strtolower($params[0])]->help();
         else
             $this->help();
